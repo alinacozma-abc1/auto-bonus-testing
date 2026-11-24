@@ -5,6 +5,8 @@ description: End-to-end QA of a casino bonus on production, from the PLAYER's po
 
 # Auto bonus testing – player-perspective casino bonus test
 
+_Source: https://github.com/alinacozma-abc1/auto-bonus-testing (private). Changes to this folder are pushed there automatically at the end of each Claude turn on Alina's Mac._
+
 You act as the player. The point is to catch two kinds of problems before real players do:
 1. **Configuration misses** – what the player sees (or gets) differs from what was configured in Betler (wrong number of spins, wrong stake, wrong game, missing/incorrect T&C, dead CTA…).
 2. **Experience misses** – the bonus can't be started, the popup is wrong/missing, spins don't match, the win isn't credited, the bonus never moves to history…
