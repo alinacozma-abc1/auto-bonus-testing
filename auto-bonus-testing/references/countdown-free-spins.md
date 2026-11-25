@@ -1,6 +1,6 @@
 # Countdown Free Spins (bonus type "Countdown Free Spins")
 
-Read this **in addition to** the standard Display / Play / Settlement checks when the bonus definition's `type` is `Countdown Free Spins`. The player gets unlimited spins at a fixed stake for a fixed time (`countdown_time`, seconds); the clock starts on the **first spin**, keeps running even if the player leaves, and the win is paid when the countdown ends.ro.
+Read this **in addition to** the standard Display / Play / Settlement checks when the bonus definition's `type` is `Countdown Free Spins`. The player gets unlimited spins at a fixed stake for a fixed time (`countdown_time`, seconds); the clock starts on the **first spin**, keeps running even if the player leaves, and the win is paid when the countdown ends.
 
 ## Expected sheet additions
 `countdown_time` (s → minutes), stake per spin (`value`), `expiry_seconds` (how long the player has to START it), game(s), provider, `popup_displayed`. There is **no spin count** — don't report "spins" checks (D5/P5/P7 become C-checks below). Backend: `bondet_state` carries `first_spin_timestamp`, `countdown_time`, `state` (new → inprogress → complete), `total_won`; **end of countdown = first_spin_timestamp + countdown_time**.
@@ -9,7 +9,7 @@ Read this **in addition to** the standard Display / Play / Settlement checks whe
 - **Play with autoplay ("Joc automat") and turbo ("Joc rapid") on**. Turbo is the "Joc rapid" switch inside the autoplay dialog for Pragmatic games, not in Settings. Pick the max autoplay count and restart it when it ends.
 - **Autoplay must never run through the end of the countdown into real money.** Stop autoplay before the last ~2 minutes, then watch the end manually. If the game shows no bonus HUD (timer/stake), stop — real money.
 - Take a `date -u` stamp at the first spin, at every leave/return, and at expiry; the clock checks compare in-game timer vs wall clock vs `first_spin_timestamp`.
-- The clock is real time, so a full run is `countdown_time` long (60 min for a 60-minute bonus). Do the pause/return tests while it runs, then wait for expiry. Use a background `sleep` to wait; don't poll.
+- The clock is real time, so a full run is `countdown_time` long (60 min for a 60-minute bonus). Do the pause/return tests while it runs, then wait for expiry. Wait with the browser's `wait` action (up to 10 s per call, several in one `browser_batch`); shell `sleep` is blocked.
 
 ## Countdown checks (C-ids)
 | ID | Check | How |
@@ -42,15 +42,15 @@ Severity: C2, C3, C6, C7, C10–C14 failures are **Experience miss**; wrong dura
 - Istoric / `complete` come ~10 min after the end (known delay). **Don't wait for it**: check the other settlement points immediately, leave S3/S4 out of the check list and add "history / final backend state not re-checked (known ~10 min delay)" to the caveats, then post at once; wait and re-verify only if the user asks.
 
 ## EGT / Amusnet countdown
-- **Popup:** "COUNTDOWN FREE SPINS · UNLIMITED FREE SPINS x €X · FOR: 1 MIN : 00 SEC" with PLAY LATER / PLAY NOW. The bar under the reels shows BET · TIME LEFT · TOTAL WIN. The spin button is the large circular arrow on the right; mute with the speaker icon at bottom right.
+- **Popup:** "COUNTDOWN FREE SPINS · UNLIMITED FREE SPINS x €X · FOR: 1 MIN : 00 SEC" with PLAY LATER / PLAY NOW (superbet.ro: "NUMĂRĂTOAREA INVERSĂ DE FREE SPINS · FREE SPINS NELIMITATE x 0.20 RON · PENTRU: 1 MIN. : 40 SEC." with JUCAȚI MAI TÂRZIU / JUCAȚI ACUM). The popup is a good moment to mute: the speaker icon at bottom right is clickable behind it. The bar under the reels shows BET · TIME LEFT · TOTAL WIN. The spin button is the large circular arrow on the right; mute with the speaker icon at bottom right.
 - **Known gap, not a failure:** the game's Time left timer starts at PLAY NOW, but Betler's `first_spin_timestamp` and the card timer start at the first spin (typically 15–20 s apart). It's in known-expected-behaviours.md, being addressed with product. Don't fail C1/C2 or the card-vs-game timer check for it; note the measured difference once in the caveats. To keep the run efficient, start autoplay right after PLAY NOW.
 - **Wins:** credited to the real balance per winning spin, with no end-of-run batch.
-- **End:** popup "has ended! YOU HAVE WON €X · You are playing with real money!", then the normal bet selector. Never spin after it.
+- **End:** popup "has ended! YOU HAVE WON €X · You are playing with real money!" (RO: "S-a încheiat! AȚI CÂȘTIGAT X RON · Jucați cu bani reali!") with OK, then the normal bet selector. Press OK; never spin after it.
 - **Short countdowns (≤ 2 min):** skip C6–C8 (leave / return / reload) and say so in the caveats. Use autoplay + turbo if the game has them (rule in SKILL.md), stopping in the last ~10 s; manual clicks during a spin animation are ignored.
 - **EGT controls:**
   - Autoplay is the small circular-arrow button above the spin button. It offers 10 / 20 / 50 / 100 / ∞. Pick a fixed count (never ∞) that ends well before the countdown does.
   - There's no turbo / quick-spin option, and the menu doesn't open during autoplay.
-  - An "Amusnet Tournament" popup appears on every launch. Close it with its X, never "Join tournament".
+  - An "Amusnet Tournament" popup may appear on launch. Close it with its X, never "Join tournament".
 - **EGT end of countdown:** if the last spin wins, the game stops at 0:00 and offers two buttons: **x2** (double-or-nothing gamble) and **collect** (the download-arrow icon).
   - Press **collect**, never x2. The last win reaches the balance, and the "has ended! YOU HAVE WON …" popup appears, only after collect.
   - Likely provider-side, so mention it in the caveats, not as a finding.
