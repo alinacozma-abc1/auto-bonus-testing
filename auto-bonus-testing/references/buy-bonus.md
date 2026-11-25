@@ -1,6 +1,6 @@
 # Buy Bonus (bonus type "Buy Bonus")
 
-Read this **in addition to** the standard Display / Play / Settlement checks when the bonus definition's `type` is `Buy Bonus`. The player gets the game's bonus-buy feature for free: one (or `count`) buy(s) at a fixed stake (`value`), worth `value × feature.price_multiplier` (= `total_bonus_value`). The bought feature (usually a free-spins round) is played at that stake and the win goes to the real balance (`payout_to: cash`). Added 2026-11-18 (Alina), first run on bc62d613 (Gates of Olympus Super Scatter, 40 RON × 100 = 4,000 RON).
+Read this **in addition to** the standard Display / Play / Settlement checks when the bonus definition's `type` is `Buy Bonus`. The player gets the game's bonus-buy feature for free: one (or `count`) buy(s) at a fixed stake (`value`), worth `value × feature.price_multiplier` (= `total_bonus_value`). The bought feature (usually a free-spins round) is played at that stake and the win goes to the real balance (`payout_to: cash`).
 
 ## Expected sheet additions
 `value` (stake per spin in the bought round), `feature.id` (BUY_BONUS / other feature), `feature.price_multiplier`, `total_bonus_value` (= value × multiplier), `count` (number of buys), game(s), provider, `expiry_seconds`, `popup_displayed`. Awarded instance: `bondet_state` `_id` starts with `BB-`, `initial_amount` = count, `used`, `multiplier`, `value` (= total value), `state` new → complete, `total_won`.

@@ -3,7 +3,7 @@
 Goal: one "expected sheet" before touching the front end, so the browser steps are pure comparison.
 
 ## Which MCP
-Always `betler-production-mcp` (load via ToolSearch). The skill is production-only (Alina, 2026-11-23), so never use the stage, dev or QA MCPs.
+Always `betler-production-mcp` (load via ToolSearch). The skill is production-only, so never use the stage, dev or QA MCPs.
 
 ## What to pull
 | Need | Source | Notes |

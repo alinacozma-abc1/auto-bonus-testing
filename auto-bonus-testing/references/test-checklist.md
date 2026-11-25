@@ -31,7 +31,7 @@ Each line = one row in the report. Record expected, observed, status.
 | P7 | Counter decrements by one per spin and the spin total matches (no lost or extra spins) |
 | P8 | FS round ends with the game's end/summary screen showing total win |
 
-(P9 console/network check removed 2026-11-19 — logs are only read to diagnose a visible failure, never reported as a check row or as Blocked.)
+(No console/network check: logs are only read to diagnose a visible failure, never reported as a check row or as Blocked.)
 
 ## Settlement
 | ID | Check |
@@ -53,5 +53,5 @@ Retry backend reads once after ~2–3 minutes before marking S4/S5 as FAIL; if s
 Cash bonus, free chips, countdown FS, wagering, buy bonus, cashback: add `references/<type>.md` with the type-specific D/P/S rows and point to it from SKILL.md. Sports bonuses get their own skill or reference with the player's bet-slip flow.
 
 ## Provider notes (Free Spins)
-- **EGT Digital** (e.g. 5 Crown Hot Clover Chance, 443246f3, 2026-11-24): the popup says "YOU HAVE RECEIVED 10 GIFT SPINS!" with no stake (the €0.05 shows in the bet box under the reels; likely provider-side, not a finding). Autoplay offers 10/20/50/100/∞ and there is a turbo (">>>") button under the spin button. After the last spin the "You have completed your Gift Spins! TOTAL WIN" popup has only CONTINUE: the last round stays open in Betler (used 9/10) until CONTINUE is pressed. Press it (it only dismisses the popup and places no bet), check the game shows the normal bet selector, and don't spin.
-- **Amusnet / EGT** (e.g. El Dogiachi 1000, 90727acb): popup "CONGRATULATIONS! You get 10 FREE SPINS x 0.05 EUR" with PLAY NOW / PLAY LATER. Autoplay 10/20/50/100/∞, no turbo. The end popup's OK returns the game to the normal bet selector.
+- **EGT Digital** (e.g. 5 Crown Hot Clover Chance): the popup says "YOU HAVE RECEIVED 10 GIFT SPINS!" with no stake (the €0.05 shows in the bet box under the reels; likely provider-side, not a finding). Autoplay offers 10/20/50/100/∞ and there is a turbo (">>>") button under the spin button. After the last spin the "You have completed your Gift Spins! TOTAL WIN" popup has only CONTINUE: the last round stays open in Betler (used 9/10) until CONTINUE is pressed. Press it (it only dismisses the popup and places no bet), check the game shows the normal bet selector, and don't spin.
+- **Amusnet / EGT** (e.g. El Dogiachi 1000): popup "CONGRATULATIONS! You get 10 FREE SPINS x 0.05 EUR" with PLAY NOW / PLAY LATER. Autoplay 10/20/50/100/∞, no turbo. The end popup's OK returns the game to the normal bet selector.
