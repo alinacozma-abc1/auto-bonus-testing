@@ -1,6 +1,6 @@
 # Countdown Free Spins (bonus type "Countdown Free Spins")
 
-Read this **in addition to** the standard Display / Play / Settlement checks when the bonus definition's `type` is `Countdown Free Spins`. The player gets unlimited spins at a fixed stake for a fixed time (`countdown_time`, seconds); the clock starts on the **first spin**, keeps running even if the player leaves, and the win is paid when the countdown ends. Added 2026-11-18, from the UAT of "3 Minute Rotiri Gratuite Gates of Olympus Super Scatter" (8 cases) plus the first full run on superbet.ro.
+Read this **in addition to** the standard Display / Play / Settlement checks when the bonus definition's `type` is `Countdown Free Spins`. The player gets unlimited spins at a fixed stake for a fixed time (`countdown_time`, seconds); the clock starts on the **first spin**, keeps running even if the player leaves, and the win is paid when the countdown ends.ro.
 
 ## Expected sheet additions
 `countdown_time` (s → minutes), stake per spin (`value`), `expiry_seconds` (how long the player has to START it), game(s), provider, `popup_displayed`. There is **no spin count** — don't report "spins" checks (D5/P5/P7 become C-checks below). Backend: `bondet_state` carries `first_spin_timestamp`, `countdown_time`, `state` (new → inprogress → complete), `total_won`; **end of countdown = first_spin_timestamp + countdown_time**.
@@ -26,7 +26,7 @@ Read this **in addition to** the standard Display / Play / Settlement checks whe
 | C10 | **At expiry**: spins stop or game leaves bonus mode cleanly; end screen/popup (if any) shows total win; no real-money spin possible by accident | observe last 10 s |
 | C11 | **Return AFTER expiry** (reopen game / card CTA): no active bonus, no stale timer, plain real-money game (not auto-spinning), no error popup | reopen after end |
 | C12 | Total win credited to **real balance** exactly = `total_won` (and HUD win); T&C "if not credited, reopen the game" case: note whether it needed reopening | balance after − before |
-| C13 | Card leaves the active list; appears in Istoric with the right name/status/amount. **Known: Istoric and `complete` arrive ~10 min after the end (confirmed 2026-11-18) — don't wait for it; leave it out of the check list and mention "not re-checked, known delay" in the caveats** | Bonusuri + Istoric |
+| C13 | Card leaves the active list; appears in Istoric with the right name/status/amount. **Known: Istoric and `complete` arrive ~10 min after the end — don't wait for it; leave it out of the check list and mention "not re-checked, known delay" in the caveats** | Bonusuri + Istoric |
 | C14 | Backend: `bondet_state` state `complete` (≈ end + 10 min), `total_won` = HUD, `first_spin_timestamp` + `countdown_time` ≈ end observed; `gaming_ticker`: no spin after the end time, no rejected rounds with wins | opensearch |
 | C15 | Spin after expiry (only if the game still allows a click): must be a real-money prompt/blocked, never silently a bonus spin; do NOT spin real money — observe only | screenshot, no click |
 | C16 | Start-of-claim window: bonus can be started until `awarded + expiry_seconds`; popup "claim until" date matches | popup vs `expires` |
