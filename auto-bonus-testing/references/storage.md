@@ -28,6 +28,6 @@ Trashed items are purged by Drive after 30 days; the owner can empty the trash f
 
 ## Upload
 1. `create_file` with `mimeType: application/vnd.google-apps.folder`, `parentId: <root id>`, `title:` the folder name above.
-2. For each screenshot: `create_file` with `parentId: <new folder id>`, `contentMimeType: image/jpeg`, `disableConversionToGoogleType: true`, and `base64Content` set to the file reference `sha256:<64-hex>:<absolute path>` (get the hash with `shasum -a 256`). Each upload is approved by the user; send them in one parallel block.
+2. **Upload the contact sheets, not every screenshot (Alina, 2026-11-25):** run `scripts/contact_sheet.sh <test folder>/screenshots <test folder>/sheets` and upload each `sheets/sheet-N.jpg`. Keep the individual screenshots locally; upload one separately only if a reviewer needs it full size. Upload method for each file: `create_file` with `parentId: <new folder id>`, `contentMimeType: image/jpeg`, `disableConversionToGoogleType: true`, and `base64Content` set to the file reference `sha256:<64-hex>:<absolute path>` (get the hash with `shasum -a 256`). Each upload is approved by the user; send them in one parallel block.
 3. Upload `report.md` (`text/markdown`, `disableConversionToGoogleType: true`).
 4. The folder link is `https://drive.google.com/drive/folders/<new folder id>` — post it in the Slack thread.

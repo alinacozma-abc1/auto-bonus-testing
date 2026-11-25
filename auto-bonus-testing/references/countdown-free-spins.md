@@ -54,3 +54,7 @@ Severity: C2, C3, C6, C7, C10–C14 failures are **Experience miss**; wrong dura
 - **EGT end of countdown:** if the last spin wins, the game stops at 0:00 and offers two buttons: **x2** (double-or-nothing gamble) and **collect** (the download-arrow icon).
   - Press **collect**, never x2. The last win reaches the balance, and the "has ended! YOU HAVE WON …" popup appears, only after collect.
   - Likely provider-side, so mention it in the caveats, not as a finding.
+
+
+## Use the countdown wait (Alina, 2026-11-25)
+While a countdown runs on autoplay, don't sit idle. Between the in-game checks, draft `findings.json` (display, play and countdown checks seen so far), build the contact sheet from the screenshots already taken, and create the Drive folder. After the end, add only the final checks, re-run the scripts and post. Never let this delay the end-of-countdown checks (watch the last ~2 min live).

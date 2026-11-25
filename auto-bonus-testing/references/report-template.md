@@ -32,7 +32,26 @@ If nothing needs attention write `**Needs attention:** nothing 🎉`. Leave out 
 3. Thread reply: screenshots link to that bonus's own Drive subfolder (see `storage.md`).
 A bonus skipped as BLOCKED (not awarded, wrong market) still gets its own short message: headline with ⛔ BLOCKED and one line with the reason. Single-bonus runs ignore this section.
 
-## Thread reply 1 – full check list (one per bonus)
+## findings.json (input to scripts/build_report.py)
+```json
+{
+  "title": "public name", "site": "superbet.gr", "market": "Greece · Superbet", "date": "YYYY-MM-DD",
+  "bonus_id": "...", "instance_id": "...", "user_id": "...",
+  "account": "confirmed (how)",
+  "config": "one line for Slack", "config_detail": "longer line for report.md (optional)",
+  "result": "one sentence: what the player got",
+  "timeline": ["awarded 11:54", "first spin 11:59", "complete 11:59"],
+  "evidence": "balance before → after · rounds · Betler state",
+  "core_blocked": false,
+  "areas": [{"name": "Display", "checks": [{"name": "Public name", "status": "pass|warn|fail|blocked", "detail": "optional, report.md only"}]}],
+  "needs_attention": [{"status": "warn|fail", "title": "Short title.", "text": "Plain-words sentence (what happens → what Betler expects → player effect).", "severity": "Config miss|Experience miss|Cosmetic"}],
+  "caveats": ["..."],
+  "drive_url": "https://drive.google.com/drive/folders/...", "screenshots": 12
+}
+```
+Verdict: any `fail` → FAIL; else `core_blocked` → INCOMPLETE; else any `warn` → PASS WITH WARNINGS; else PASS. Check names are plain words, never ids. Leave N/A checks out.
+
+## Thread reply – full check list + screenshots link (ONE reply per bonus, Alina 2026-11-25)
 Areas are **numbered** (1. Display, 2. Play, 3. Settlement; 3. Countdown + 4. Settlement for countdown bonuses). Within an area, each status that has checks gets a line with the status word **and** emoji (Passed ✅ · Warning ⚠️ · Failed ❌ · Blocked ⛔), and the check **names** (plain words, not ids) are **bullets** under it, one per line. Skip statuses with no checks.
 **Leave an empty line before every status line** (Passed / Warning / Failed / Blocked) that follows a bullet list (Alina, 2026-11-19): Slack otherwise treats the status line as part of the last bullet and indents it.
 **Never show Not applicable (➖) on Slack** (Alina, 2026-11-18): no ➖ section in the thread check list and no ➖ count in the summary line. Checks that don't apply are simply left out; if something was skipped on purpose (e.g. no spin after the end, history not re-checked), say it once in "Not tested / caveats".
@@ -61,7 +80,8 @@ Passed ✅
 ```
 Only expand a check into its own line with expected vs observed when it is not ✅ (that goes in "Needs attention" in reply 1).
 
-## Thread reply 2+ – screenshots
+## Screenshots (now inside the single thread reply)
+The Drive link goes at the end of the single thread reply (build_report.py adds it from `drive_url`). The older guidance below still describes the gallery-page option.
 The Slack connector can't upload files. First upload everything to the shared Drive folder (see `storage.md`) and post that **Drive folder link** in the thread — it is the primary link because the whole company can open it and it follows the 5-day retention rule. The per-person **gallery page** below is an optional extra (private to its publisher, so keep it second):
 1. Generate a single HTML page with the screenshots embedded as data URIs (one card per screenshot: image, number, caption, status badge Passed/Warning/Failed, the checks it covers). Keep it light/dark themed and mobile friendly; title it "Bonus Test Evidence". Python script pattern: read `screenshots/*.jpg`, base64-embed, write HTML to the scratchpad (a reusable generator was used on 2026-11-18; rewrite it if it's gone).
 2. Publish it with the Artifact tool (private by default) and post the URL in the thread, noting that the link is private: only the owner and people it is shared with can open it. If the thread's readers aren't the owner, say they need sharing access.
